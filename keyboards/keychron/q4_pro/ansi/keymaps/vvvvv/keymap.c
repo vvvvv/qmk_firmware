@@ -38,6 +38,15 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
+uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LCTL_T(KC_ESC): // Prioritize CTRL if another key is pressed
+            return 0;
+        default:
+            return QUICK_TAP_TERM;
+    }
+}
+
 // Define a type for as many tap dance states as you need
 // typedef enum { TD_NONE, TD_UNKNOWN, TD_SINGLE_TAP, TD_SINGLE_HOLD, TD_DOUBLE_HOLD, TD_DOUBLE_TAP } td_state_t;
 typedef enum { TD_NONE, TD_UNKNOWN, TD_SINGLE_TAP, TD_SINGLE_HOLD, TD_DOUBLE_TAP, TD_DOUBLE_HOLD, TD_TRIPPLE_TAP } td_state_t;
@@ -156,8 +165,8 @@ tap_dance_action_t tap_dance_actions[] = {[LSHIFT_LAYER_2] = ACTION_TAP_DANCE_FN
 // Set a long-ish tapping term for tap-dance keys
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case LCTL_T(KC_ESC):
-            return 120;
+        // case LCTL_T(KC_ESC):
+        //     return 120;
         case QK_TAP_DANCE ... QK_TAP_DANCE_MAX:
             return 275;
         default:
